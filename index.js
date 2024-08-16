@@ -6,21 +6,16 @@ const ytdl = require('ytdl-core');
 const fs = require('fs');
 const path = require('path');
 const ping = require('ping');
-
-// Import node-fetch dynamically
-let fetch;
-(async () => {
-    fetch = (await import('node-fetch')).default;
-})();
+const puppeteer = require('puppeteer');
+const cheerio = require('cheerio');
 
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: { headless: true }
 });
 
-const YOUTUBE_API_KEY = 'YOUR_API_KEY'; // Replace with your YouTube Data API key
-const YOUTUBE_PLAYLIST_ID = 'YOUR_PLAYLIST_ID'; // Replace with the playlist ID containing Shorts
 const PRAYER_API_URL = 'http://api.aladhan.com/v1/timingsByCity?city=Kangar&country=Malaysia'; // URL for prayer times API
+const EIGHTBALL_API_URL = 'https://api.popcat.xyz/8ball'; // New URL for 8-ball API
 
 client.on('qr', qr => {
     qrcode.generate(qr, { small: true });
@@ -30,6 +25,33 @@ client.on('qr', qr => {
 client.on('ready', () => {
     console.log('Client is ready!');
 });
+
+// Function to handle Instagram content
+async function sendInstagramContent(message, link) {
+    try {
+        const response = await axios.get(link);
+        const $ = cheerio.load(response.data);
+
+        // Extract video or image URL
+        const videoUrl = $('meta[property="og:video"]').attr('content');
+        const imageUrl = $('meta[property="og:image"]').attr('content');
+
+        if (videoUrl) {
+            // It's a video
+            const videoMedia = await MessageMedia.fromUrl(videoUrl);
+            await message.reply(videoMedia);
+        } else if (imageUrl) {
+            // It's an image
+            const imageMedia = await MessageMedia.fromUrl(imageUrl);
+            await message.reply(imageMedia);
+        } else {
+            await message.reply('Could not find media content at the provided link :(');
+        }
+    } catch (error) {
+        console.error('Error fetching Instagram content:', error);
+        await message.reply('Error fetching Instagram content :(');
+    }
+}
 
 // Function to handle meme images
 async function sendMemeImage(message) {
@@ -114,13 +136,15 @@ async function sendMenu(message) {
     const menuText = `
 *Bot Commands:*
 
+• *pls menu* - Show this menu
+• *pls ai <query>* - Ask the AI chatbot a question
 • *pls meme* - Get a random meme image
 • *pls joke* - Get a random joke
 • *pls quiz* - Start a quiz
-• *pls ping* - Get bot connection info
-• *pls menu* - Show this menu
+• *pls tl <language> <text>* - Translate text to specified language
 • *pls pray* - Get prayer times for Kangar, Malaysia
-• *pls ai <query>* - Ask the AI chatbot a question
+• *pls ping* - Get bot connection info
+• *pls 8ball <text>* - Ask the 8-ball a question
 
 *Enjoy using the bot!*
 `;
@@ -187,8 +211,8 @@ async function handleAIRequest(message, query) {
         const userid = message.from || "default";
         let apiurl = `https://api.guruapi.tech/ai/gpt4?username=${userid}&query=hii${prompt}`;
 
-        const result = await fetch(apiurl);
-        const response = await result.json();
+        const result = await axios.get(apiurl);
+        const response = result.data;
         
         if (!response.msg) throw 'No result found';
 
@@ -200,9 +224,51 @@ async function handleAIRequest(message, query) {
     }
 }
 
+// Function to handle translation
+async function translateText(message, language, text) {
+    try {
+        const response = await axios.get('https://api.popcat.xyz/translate', {
+            params: {
+                to: language,
+                text: text
+            }
+        });
+
+        const { translated } = response.data;
+
+        if (!translated) {
+            await message.reply('*Error*');
+        } else {
+            await message.reply(translated);
+        }
+    } catch (error) {
+        console.error('Error fetching translation:', error);
+        await message.reply('Could not fetch translation :(');
+    }
+}
+
+// Function to handle 8-ball queries
+async function handle8BallRequest(message, question) {
+    try {
+        if (!question) throw 'You need to ask a question!';
+
+        const response = await axios.get(EIGHTBALL_API_URL);
+        const answer = response.data.answer;
+
+        await message.reply(answer);
+    } catch (error) {
+        console.error('Error fetching 8-ball response:', error);
+        await message.reply('Could not fetch 8-ball response :(');
+    }
+}
+
+// Main message handler
 client.on('message_create', async (message) => {
     if (message.fromMe || (await message.getChat()).isGroup) {
-        if (message.body.startsWith('pls ai ')) {
+        if (message.body.startsWith('pls ig ')) {
+            const link = message.body.slice(7).trim();
+            await sendInstagramContent(message, link);
+        } else if (message.body.startsWith('pls ai ')) {
             const query = message.body.slice(7).trim();
             await handleAIRequest(message, query);
         } else if (message.body === 'pls meme') {
@@ -226,6 +292,14 @@ client.on('message_create', async (message) => {
             await pingBot(message);
         } else if (message.body === 'pls pray') {
             await sendPrayerTimes(message);
+        } else if (message.body.startsWith('pls tl ')) {
+            const parts = message.body.slice(7).trim().split(' ', 2);
+            const language = parts[0];
+            const text = parts[1];
+            await translateText(message, language, text);
+        } else if (message.body.startsWith('pls 8ball ')) {
+            const question = message.body.slice(10).trim();
+            await handle8BallRequest(message, question);
         }
     }
 });
