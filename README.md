@@ -1,7 +1,7 @@
 <h1 align="center">Greetings! WhatsApp Meme Bot!</h1>
 <h3 align="center">A very simple and easy to use bot!</h3>
 
-# HOW TO USE
+##HOW TO USE
 
 -> Fork this repo
 -> Click the "Actions" tab on the top bar of the github bar
