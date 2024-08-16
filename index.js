@@ -18,8 +18,8 @@ const client = new Client({
     puppeteer: { headless: true }
 });
 
-const YOUTUBE_API_KEY = 'YOUR_YT_API_KEY'; // Replace with your YouTube Data API key
-const YOUTUBE_PLAYLIST_ID = 'ANY_PLAYLIST_ID'; // Replace with the playlist ID containing Shorts
+const YOUTUBE_API_KEY = 'AIzaSyDns5JxUJbYVtdsZNPb0rQpxleZD1aqFpI'; // Replace with your YouTube Data API key
+const YOUTUBE_PLAYLIST_ID = 'PLv3TTBr1W_9tppikBxAE_G6qjWdBljBHJ'; // Replace with the playlist ID containing Shorts
 const PRAYER_API_URL = 'http://api.aladhan.com/v1/timingsByCity?city=Kangar&country=Malaysia'; // URL for prayer times API
 
 client.on('qr', qr => {
