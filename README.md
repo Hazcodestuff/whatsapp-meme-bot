@@ -1,6 +1,17 @@
 <h1 align="center">Greetings! WhatsApp Meme Bot!</h1>
 <h3 align="center">A very simple and easy to use bot!</h3>
 
+# HOW TO USE
+
+>> Fork this repo
+>> Click the "Actions" tab on the top bar of the github bar
+>> Enable the workflow
+>> Then click "Code" (Go back)
+>> Then make any necessary changes in index.js
+>> Click "actions and open the deployment thingy
+>> Scan the Qr Code to connect with your device
+>> Enjoy!
+
 - ⚡ Fun fact **I use Chat-GPT to make this project possible. So thanks to that!**
 
 <h3 align="left">Connect with me:</h3>
