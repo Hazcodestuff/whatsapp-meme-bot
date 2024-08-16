@@ -3,14 +3,14 @@
 
 # HOW TO USE
 
->> Fork this repo
->> Click the "Actions" tab on the top bar of the github bar
->> Enable the workflow
->> Then click "Code" (Go back)
->> Then make any necessary changes in index.js
->> Click "actions and open the deployment thingy
->> Scan the Qr Code to connect with your device
->> Enjoy!
+> Fork this repo
+> Click the "Actions" tab on the top bar of the github bar
+> Enable the workflow
+> Then click "Code" (Go back)
+> Then make any necessary changes in index.js
+> Click "actions and open the deployment thingy
+> Scan the Qr Code to connect with your device
+> Enjoy!
 
 - ⚡ Fun fact **I use Chat-GPT to make this project possible. So thanks to that!**
 
