@@ -1,4 +1,4 @@
-<h1 align="center">Greetings! WhatsApp Meme Bot!</h1>
+<h1 align="center">WhatsApp Meme Bot V0.4</h1>
 <h3 align="center">A very simple and easy to use bot!</h3>
 
 # HOW TO USE
