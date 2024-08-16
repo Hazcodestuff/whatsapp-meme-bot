@@ -18,8 +18,8 @@ const client = new Client({
     puppeteer: { headless: true }
 });
 
-const YOUTUBE_API_KEY = 'AIzaSyDns5JxUJbYVtdsZNPb0rQpxleZD1aqFpI'; // Replace with your YouTube Data API key
-const YOUTUBE_PLAYLIST_ID = 'PLv3TTBr1W_9tppikBxAE_G6qjWdBljBHJ'; // Replace with the playlist ID containing Shorts
+const YOUTUBE_API_KEY = 'YOUR_YT_API_KEY'; // Replace with your YouTube Data API key
+const YOUTUBE_PLAYLIST_ID = 'ANY_PLAYLIST_ID'; // Replace with the playlist ID containing Shorts
 const PRAYER_API_URL = 'http://api.aladhan.com/v1/timingsByCity?city=Kangar&country=Malaysia'; // URL for prayer times API
 
 client.on('qr', qr => {
@@ -41,13 +41,13 @@ async function sendMemeImage(message) {
 
         if (meme.url.endsWith('.jpg') || meme.url.endsWith('.png') || meme.url.endsWith('.gif')) {
             const memeMedia = await MessageMedia.fromUrl(meme.url);
-            await client.sendMessage(message.from, memeMedia);
+            await message.reply(memeMedia);
         } else {
             throw new Error('Unsupported image format.');
         }
     } catch (error) {
         console.error('Error fetching meme image:', error);
-        await client.sendMessage(message.from, 'Could not fetch meme image :(');
+        await message.reply('Could not fetch meme image :(');
     }
 }
 
@@ -81,11 +81,11 @@ async function sendQuiz(message) {
             quizText += `${index + 1}. ${answer}\n`;
         });
 
-        await client.sendMessage(message.from, quizText);
-        await client.sendMessage(message.from, 'Reply with the number of your answer.');
+        await message.reply(quizText);
+        await message.reply('Reply with the number of your answer.');
     } catch (error) {
         console.error('Error fetching quiz question:', error);
-        await client.sendMessage(message.from, 'Could not fetch quiz question :(');
+        await message.reply('Could not fetch quiz question :(');
     }
 }
 
@@ -103,7 +103,7 @@ async function handleQuizResponse(message) {
             responseMessage = `Incorrect. The correct answer is: ${userQuiz.correctAnswer}`;
         }
 
-        await client.sendMessage(message.from, responseMessage);
+        await message.reply(responseMessage);
 
         // Clean up the quiz data
         delete activeQuizzes[message.from];
@@ -125,7 +125,7 @@ async function sendMenu(message) {
 *Enjoy using the bot!*
 `;
 
-    await client.sendMessage(message.from, menuText);
+    await message.reply(menuText);
 }
 
 async function pingBot(message) {
@@ -143,10 +143,10 @@ async function pingBot(message) {
 *Bot is connected and running smoothly :D*
 `;
 
-        await client.sendMessage(message.from, pingInfo);
+        await message.reply(pingInfo);
     } catch (error) {
         console.error('Error fetching ping information:', error);
-        await client.sendMessage(message.from, 'Could not fetch ping information :(');
+        await message.reply('Could not fetch ping information :(');
     }
 }
 
@@ -169,10 +169,10 @@ async function sendPrayerTimes(message) {
 *Note: Times are approximate and may vary slightly.*
 `;
 
-        await client.sendMessage(message.from, prayerText);
+        await message.reply(prayerText);
     } catch (error) {
         console.error('Error fetching prayer times:', error);
-        await client.sendMessage(message.from, 'Could not fetch prayer times :(');
+        await message.reply('Could not fetch prayer times :(');
     }
 }
 
@@ -193,20 +193,15 @@ async function handleAIRequest(message, query) {
         if (!response.msg) throw 'No result found';
 
         const replyText = response.msg;
-        await client.sendMessage(message.from, replyText);
+        await message.reply(replyText);
     } catch (error) {
         console.error('Error handling AI request:', error);
-        await client.sendMessage(message.from, 'Oops! Something went wrong. We are trying hard to fix it ASAP.');
+        await message.reply('Oops! Something went wrong. We are trying hard to fix it ASAP.');
     }
 }
 
-
 client.on('message_create', async (message) => {
-    const chat = await message.getChat();
-    const isGroup = chat.isGroup;
-    const botNumber = client.info.wid._serialized; // Get the bot's own WhatsApp number
-    
-    if (message.fromMe || (isGroup && message.author === botNumber)) { 
+    if (message.fromMe || (await message.getChat()).isGroup) {
         if (message.body.startsWith('pls ai ')) {
             const query = message.body.slice(7).trim();
             await handleAIRequest(message, query);
@@ -216,10 +211,10 @@ client.on('message_create', async (message) => {
             try {
                 const joke = await axios.get('https://official-joke-api.appspot.com/jokes/random');
                 const jokeText = `${joke.data.setup}\n\n${joke.data.punchline}`;
-                await client.sendMessage(message.from, jokeText);
+                await message.reply(jokeText);
             } catch (error) {
                 console.error('Error fetching joke:', error);
-                await client.sendMessage(message.from, 'Error fetching joke.');
+                await message.reply('Error fetching joke.');
             }
         } else if (message.body === 'pls quiz') {
             await sendQuiz(message);
