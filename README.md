@@ -3,8 +3,8 @@
 
 # HOW TO USE
 
--> Fork this repo /n
--> Click the "Actions" tab on the top bar of the github bar /n
+-> Fork this repo
+-> Click the "Actions" tab on the top bar of the github bar
 -> Enable the workflow
 -> Then click "Code" (Go back)
 -> Then make any necessary changes in index.js
