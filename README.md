@@ -3,6 +3,7 @@
 
 # HOW TO USE
 
+**Deploy this into the GitHub Workflow!**
 -> Fork this repo
 -> Click the "Actions" tab on the top bar of the github bar
 -> Enable the workflow
