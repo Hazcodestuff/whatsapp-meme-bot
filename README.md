@@ -13,7 +13,36 @@
 -> Scan the Qr Code to connect with your device
 -> Enjoy!
 
+#### Deploy to Toystack! (Currently WIP)
+
+If You don't have an account in Toystack. Create an account.
+    <br>
+<p align="center"><a href="https://toystack.ai"> <img src="https://img.shields.io/badge/Toystack%20Account-blue?style=for-the-badge&logo=Toystack" width="220" height="38.45"/></a></p>
+
+After that you can deploy the bot!
+
 - ⚡ Fun fact **I use Chat-GPT to make this project possible. So thanks to that!**
+
+
+## 🤩 Support
+
+- Star ⭐ the repo if you like the bot!
+
+
+<h2 align="center">  Reminder
+</h2>
+   
+## 
+- This bot is not made by `WhatsApp Inc.` So misusing the bot might `ban` your `WhatsApp account!`(Though your WhatsApp account can be unbanned only once.)
+- I am not responsible for banning your account.
+- Use at your own risk by keeping this warning in mind.
+
+
+## `Main Dev` 
+<a href="https://github.com/Hazcodestuff"><img src="https://github.com/Hazcodestuff.png" width="250" height="250" alt="Hazcodestuff"/></a>
+
+### Assistant
+<a href="chatgpt.com"><img src="https://static.vecteezy.com/system/resources/previews/021/608/790/original/chatgpt-logo-chat-gpt-icon-on-black-background-free-vector.jpg" width="200" height="200" alt="ChatGPT"/></a>
 
 <h3 align="left">Connect with me:</h3>
 <p align="left">
