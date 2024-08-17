@@ -9,10 +9,21 @@ const ping = require('ping');
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 
+const SESSION_FILE_PATH = path.join(__dirname, 'session.json');
+
+// Load session data from file if it exists
+let sessionData;
+if (fs.existsSync(SESSION_FILE_PATH)) {
+    sessionData = require(SESSION_FILE_PATH);
+}
+
 const client = new Client({
-    authStrategy: new LocalAuth(),
+    authStrategy: new LocalAuth({
+        dataPath: sessionData ? SESSION_FILE_PATH : undefined
+    }),
     puppeteer: { headless: true }
 });
+
 
 const PRAYER_API_URL = 'http://api.aladhan.com/v1/timingsByCity?city=Kangar&country=Malaysia'; // URL for prayer times API
 const EIGHTBALL_API_URL = 'https://api.popcat.xyz/8ball'; // New URL for 8-ball API
@@ -24,6 +35,9 @@ client.on('qr', qr => {
 
 client.on('ready', () => {
     console.log('Client is ready!');
+       // Save the session data to a file
+       fs.writeFileSync(SESSION_FILE_PATH, JSON.stringify(client.authStrategy.getState(), null, 2));
+       console.log('Session data saved to session.json');
 });
 
 // Function to handle Instagram content
