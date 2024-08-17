@@ -21,8 +21,6 @@ If You don't have an account in Toystack. Create an account.
 
 After that you can deploy the bot!
 
-- ⚡ Fun fact **I use Chat-GPT to make this project possible. So thanks to that!**
-
 
 ## 🤩 Support
 
