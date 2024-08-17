@@ -15,18 +15,17 @@
 
 #### Deploy to Toystack! (Currently WIP)
 
-If You don't have an account in Toystack. Create an account.
+If You don't have an account in Toystack. Create an account. After That you can deploy the bot!
     <br>
 <p align="center"><a href="https://toystack.ai"> <img src="https://img.shields.io/badge/Toystack%20Account-blue?style=for-the-badge&logo=Toystack" width="220" height="38.45"/></a></p>
 
-After that you can deploy the bot!
 
 
 
-
-## 🤩 Support
+## Beep Boop!
 
 - Star ⭐ the repo if you like the bot!
+- Yes, ChatGPT helped me with most of the code, literally.
 
 
 <h2 align="center">  Reminder
