@@ -1,23 +1,26 @@
-# Use the official Node.js image as the base image
+# Use an official Node.js runtime as a parent image
 FROM node:18
 
-# Set the working directory in the container
-WORKDIR /usr/src/app
+# Set the working directory
+WORKDIR /app
 
-# Copy package.json and package-lock.json (or yarn.lock) to the working directory
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of your application code to the working directory
+# Copy the rest of the application
 COPY . .
 
-# Expose the port your app runs on (if applicable)
-# EXPOSE 8080
+# If you're using Puppeteer or Playwright, you might need some extra dependencies
+RUN apt-get update && apt-get install -y \
+    wget \
+    --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
 
-# Command to run your bot
+# Expose the port the app runs on (if necessary)
+EXPOSE 3000
+
+# Command to start the bot
 CMD ["node", "index.js"]
-
-# If you have any specific environment variables, you might need to set them here
-# ENV SOME_ENV_VAR=some_value
