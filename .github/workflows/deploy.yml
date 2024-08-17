@@ -1,4 +1,4 @@
-name: Deploy
+name: CI Workflow
 
 on:
   push:
@@ -6,25 +6,27 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    strategy:
+      matrix:
+        node-version: [18.x]
 
-      - name: Set up Node.js
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
+      - name: Run Tests
         run: node index.js
 
-      - name: Deploy
-        run: |
-          # Add your deployment commands here
-          echo "Deploying the application..."
+      - name: Build and Deploy
+        run: npm run build
